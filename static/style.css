@@ -1,0 +1,155 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: rgb(3, 154, 156);
+  background: linear-gradient(
+    90deg,
+    rgba(3, 154, 156, 1) 50%,
+    rgba(181, 243, 255, 1) 50%
+  );
+  /* background-image: url(images/lighter.webp); */
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Mrs Saint Delafield", cursive;
+  font-family: "Oswald", sans-serif;
+  flex-direction: column;
+  padding: 30px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+.info-card {
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 800px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.info-card .rows {
+  display: flex;
+  padding-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  flex-wrap: wrap;
+}
+
+.info-card .cols {
+  display: flex;
+  flex-direction: column;
+  width: 47%;
+  margin-left: 20px;
+  flex-wrap: wrap;
+  padding: 40px 0;
+}
+
+.info-card .col:nth-child(2) {
+  /* border-left: 2px solid #039a9c;
+  border-right: 2px solid #039a9c; */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.info-card .logo {
+  border-bottom: 2px solid #039a9c;
+  padding: 30px 0;
+}
+.info-card .logo h2 {
+  text-align: center;
+  color: #039a9c;
+  text-transform: uppercase;
+}
+
+.info-card .input-field {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.info-card .input-field label {
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  color: #039a9c;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.info-card .input-field input {
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #039a9c;
+  color: #039a9c;
+}
+
+.info-card .input-field input:focus {
+  background-color: #039a9c;
+  color: white;
+  transition: 0.5s all;
+}
+.info-card .input-field .gender-box {
+  padding-top: 10px;
+  padding-bottom: 0;
+  margin-left: 50px;
+}
+
+.info-card .summit-bt {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.info-card .summit-bt button {
+  width: 100%;
+  padding: 15px 10px;
+  background: none;
+  outline: none;
+  border: none;
+  border-top: 2px solid #039a9c;
+  color: #039a9c;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.info-card .summit-bt button:hover {
+  transition: 0.3s ease-in-out;
+  background-color: #039a9c;
+  color: white;
+}
+
+.alert {
+  border-radius: 20px;
+  text-align: center;
+  margin: 0 50px;
+}
+
+.alert p {
+  margin-bottom: 0;
+}
+
+#alert-1 {
+  background-color: aqua;
+  padding: 20px 10px;
+  font-size: 50px;
+  border-radius: 10px;
+  display: block !important;
+}
+
+#alert-0 {
+  background-color: aqua;
+  padding: 20px 10px;
+  font-size: 50px;
+  display: block !important;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- bootstrap file  -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- css file sheet -->
+    <link rel="stylesheet" href="../static/style.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='main.css') }}"
+    />
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Oswald:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+
+    <!-- your title icon  -->
+
+
+    <link rel="shortcut icon" href="../static/images/diabetes-test.png">
+
+
+    <!-- title -->
+    <title>Diabetes Test</title>
+  </head>
+  <body>
+    <div class="info-card">
+      <form action="/index" method="POST">
+        <div class="logo">
+          <h2>informations card</h2>
+        </div>
+        <div class="input-field">
+          {% if feedback %}
+          <div class="alert alert-danger" role="alert">
+            <p>{{ feedback }}</p>
+          </div>
+          {% endif %}
+          <div class="rows">
+            <div class="cols">
+
+              <label for="Pregnancies">Pregnancies</label>
+              <input type="text" name="Pregnancies" id="Pregnancies"/>
+              <label for="glucose">glucose</label>
+              <input type="text" name="glucose" id="glucose" />
+              <label for="BloodPressure">BloodPressure</label>
+              <input type="text" name="BloodPressure" id="BloodPressure" />
+              <label for="SkinThickness">SkinThickness</label>
+              <input type="text" name="SkinThickness" id="SkinThickness" />
+            </div>
+            <div class="cols">
+
+              <label for="Insulin">Insulin</label>
+              <input type="text" name="Insulin" id="Insulin" />
+              <label for="BMI">BMI</label>
+              <input type="text" name="BMI" id="BMI" />
+              <label for="DiabetesPedigreeFunction">DiabetesPedigreeFunction</label>
+              <input type="text" name="DiabetesPedigreeFunction" id="DiabetesPedigreeFunction" />
+              <label for="Age">Age</label>
+              <input type="text" name="Age" id="Age" />
+            </div>
+          </div>
+        </div>
+        <!-- input btn -->
+        <div class="summit-bt">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+      
+    </div>
+    
+    
+  </div>
+
+  {% if not feedback %}
+  <div id="alert-1" style="display:none">
+    patient has diabetes &#128577;
+  </div>
+  <div id="alert-0 " style="display:none">
+    patient doesn't have diabetes &#128522;
+  </div>
+
+  <script>
+    if(document.URL.split("=")[1]=='[1]'){
+      document.querySelector("#alert-"+1).style.display = "block";;
+    }else{
+      document.querySelector("#alert-"+0).style.display = "block";;
+    }
+  </script>
+      {% endif %}
+      
+      <!-- bootstrap js file  -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
