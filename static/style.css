@@ -139,17 +139,19 @@ form {
   margin-bottom: 0;
 }
 
-#alert-1 {
+#alert {
   background-color: aqua;
   padding: 20px 10px;
   font-size: 50px;
   border-radius: 10px;
-  display: block !important;
+  margin-top: 25px;
+  /* display: block !important; */
 }
 
-#alert-0 {
+/* #alert-0 {
   background-color: aqua;
   padding: 20px 10px;
   font-size: 50px;
   display: block !important;
 }
+*/

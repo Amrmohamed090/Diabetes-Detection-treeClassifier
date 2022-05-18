@@ -17,6 +17,7 @@ from scipy import sparse
 from joblib import Parallel
 
 from .base import clone, TransformerMixin
+from .preprocessing import FunctionTransformer
 from .utils._estimator_html_repr import _VisualBlock
 from .utils.metaestimators import available_if
 from .utils import (
@@ -145,7 +146,6 @@ class Pipeline(_BaseComposition):
         self.steps = steps
         self.memory = memory
         self.verbose = verbose
-        self._validate_steps()
 
     def get_params(self, deep=True):
         """Get parameters for this estimator.
@@ -319,29 +319,17 @@ class Pipeline(_BaseComposition):
 
         fit_transform_one_cached = memory.cache(_fit_transform_one)
 
-        for (step_idx, name, transformer) in self._iter(
+        for step_idx, name, transformer in self._iter(
             with_final=False, filter_passthrough=False
         ):
             if transformer is None or transformer == "passthrough":
                 with _print_elapsed_time("Pipeline", self._log_message(step_idx)):
                     continue
 
-            if hasattr(memory, "location"):
-                # joblib >= 0.12
-                if memory.location is None:
-                    # we do not clone when caching is disabled to
-                    # preserve backward compatibility
-                    cloned_transformer = transformer
-                else:
-                    cloned_transformer = clone(transformer)
-            elif hasattr(memory, "cachedir"):
-                # joblib < 0.11
-                if memory.cachedir is None:
-                    # we do not clone when caching is disabled to
-                    # preserve backward compatibility
-                    cloned_transformer = transformer
-                else:
-                    cloned_transformer = clone(transformer)
+            if hasattr(memory, "location") and memory.location is None:
+                # we do not clone when caching is disabled to
+                # preserve backward compatibility
+                cloned_transformer = transformer
             else:
                 cloned_transformer = clone(transformer)
             # Fit or load from cache the current transformer
@@ -719,17 +707,6 @@ class Pipeline(_BaseComposition):
         # check if first estimator expects pairwise input
         return {"pairwise": _safe_tags(self.steps[0][1], "pairwise")}
 
-    # TODO: Remove in 1.1
-    # mypy error: Decorated property not supported
-    @deprecated(  # type: ignore
-        "Attribute `_pairwise` was deprecated in "
-        "version 0.24 and will be removed in 1.1 (renaming of 0.26)."
-    )
-    @property
-    def _pairwise(self):
-        # check if first estimator expects pairwise input
-        return getattr(self.steps[0][1], "_pairwise", False)
-
     def get_feature_names_out(self, input_features=None):
         """Get output feature names for transformation.
 
@@ -916,8 +893,9 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
 
     Parameters of the transformers may be set using its name and the parameter
     name separated by a '__'. A transformer may be replaced entirely by
-    setting the parameter with its name to another transformer,
-    or removed by setting to 'drop'.
+    setting the parameter with its name to another transformer, removed by
+    setting to 'drop' or disabled by setting to 'passthrough' (features are
+    passed without transformation).
 
     Read more in the :ref:`User Guide <feature_union>`.
 
@@ -925,12 +903,14 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
 
     Parameters
     ----------
-    transformer_list : list of tuple
-        List of tuple containing `(str, transformer)`. The first element
-        of the tuple is name affected to the transformer while the
-        second element is a scikit-learn transformer instance.
-        The transformer instance can also be `"drop"` for it to be
-        ignored.
+    transformer_list : list of (str, transformer) tuples
+        List of transformer objects to be applied to the data. The first
+        half of each tuple is the name of the transformer. The transformer can
+        be 'drop' for it to be ignored or can be 'passthrough' for features to
+        be passed unchanged.
+
+        .. versionadded:: 1.1
+           Added the option `"passthrough"`.
 
         .. versionchanged:: 0.22
            Deprecated `None` as a transformer in favor of 'drop'.
@@ -988,7 +968,6 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
         self.n_jobs = n_jobs
         self.transformer_weights = transformer_weights
         self.verbose = verbose
-        self._validate_transformers()
 
     def get_params(self, deep=True):
         """Get parameters for this estimator.
@@ -1040,7 +1019,7 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
 
         # validate estimators
         for t in transformers:
-            if t == "drop":
+            if t in ("drop", "passthrough"):
                 continue
             if not (hasattr(t, "fit") or hasattr(t, "fit_transform")) or not hasattr(
                 t, "transform"
@@ -1067,12 +1046,15 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
         Generate (name, trans, weight) tuples excluding None and
         'drop' transformers.
         """
+
         get_weight = (self.transformer_weights or {}).get
-        return (
-            (name, trans, get_weight(name))
-            for name, trans in self.transformer_list
-            if trans != "drop"
-        )
+
+        for name, trans in self.transformer_list:
+            if trans == "drop":
+                continue
+            if trans == "passthrough":
+                trans = FunctionTransformer()
+            yield (name, trans, get_weight(name))
 
     @deprecated(
         "get_feature_names is deprecated in 1.0 and will be removed "
@@ -1249,6 +1231,12 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
 
         # X is passed to all transformers so we just delegate to the first one
         return self.transformer_list[0][1].n_features_in_
+
+    def __sklearn_is_fitted__(self):
+        # Delegate whether feature union was fitted
+        for _, transformer, _ in self._iter():
+            check_is_fitted(transformer)
+        return True
 
     def _sk_visual_block_(self):
         names, transformers = zip(*self.transformer_list)

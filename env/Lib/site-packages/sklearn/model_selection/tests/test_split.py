@@ -1773,9 +1773,6 @@ def test_nested_cv():
         LeaveOneGroupOut(),
         StratifiedKFold(n_splits=2),
         GroupKFold(n_splits=3),
-        StratifiedKFold(),
-        StratifiedGroupKFold(),
-        StratifiedShuffleSplit(n_splits=3, random_state=0),
     ]
 
     for inner_cv, outer_cv in combinations_with_replacement(cvs, 2):

@@ -1,4 +1,4 @@
-#!"C:\xampp\htdocs\Final Project\amrproject\env\Scripts\python.exe"
+#!C:\Users\amrom\OneDrive\Desktop\amrproject\env\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'json5==0.9.8','console_scripts','pyjson5'
 import re
 import sys

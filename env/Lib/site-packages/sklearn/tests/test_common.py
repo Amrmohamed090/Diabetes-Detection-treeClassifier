@@ -11,11 +11,12 @@ import warnings
 import sys
 import re
 import pkgutil
-from inspect import isgenerator, signature
+from inspect import isgenerator, signature, Parameter
 from itertools import product, chain
 from functools import partial
 
 import pytest
+import numpy as np
 
 from sklearn.utils import all_estimators
 from sklearn.utils._testing import ignore_warnings
@@ -114,8 +115,6 @@ def test_check_estimator_generate_only():
     assert isgenerator(all_instance_gen_checks)
 
 
-@ignore_warnings(category=(DeprecationWarning, FutureWarning))
-# ignore deprecated open(.., 'U') in numpy distutils
 def test_configure():
     # Smoke test the 'configure' step of setup, this tests all the
     # 'configure' functions in the setup.pys in scikit-learn
@@ -368,7 +367,7 @@ column_name_estimators = list(
 def test_pandas_column_name_consistency(estimator):
     _set_checking_parameters(estimator)
     with ignore_warnings(category=(FutureWarning)):
-        with pytest.warns(None) as record:
+        with warnings.catch_warnings(record=True) as record:
             check_dataframe_column_names_consistency(
                 estimator.__class__.__name__, estimator
             )
@@ -379,19 +378,8 @@ def test_pandas_column_name_consistency(estimator):
 # TODO: As more modules support get_feature_names_out they should be removed
 # from this list to be tested
 GET_FEATURES_OUT_MODULES_TO_IGNORE = [
-    "cluster",
-    "cross_decomposition",
-    "decomposition",
-    "discriminant_analysis",
     "ensemble",
-    "impute",
-    "isotonic",
     "kernel_approximation",
-    "preprocessing",
-    "manifold",
-    "neighbors",
-    "neural_network",
-    "random_projection",
 ]
 
 
@@ -422,3 +410,35 @@ def test_transformers_get_feature_names_out(transformer):
         check_transformer_get_feature_names_out_pandas(
             transformer.__class__.__name__, transformer
         )
+
+
+VALIDATE_ESTIMATOR_INIT = [
+    "SGDOneClassSVM",
+]
+VALIDATE_ESTIMATOR_INIT = set(VALIDATE_ESTIMATOR_INIT)
+
+
+@pytest.mark.parametrize(
+    "Estimator",
+    [est for name, est in all_estimators() if name not in VALIDATE_ESTIMATOR_INIT],
+)
+def test_estimators_do_not_raise_errors_in_init_or_set_params(Estimator):
+    """Check that init or set_param does not raise errors."""
+
+    # Remove parameters with **kwargs by filtering out Parameter.VAR_KEYWORD
+    # TODO: Remove in 1.2 when **kwargs is removed in RadiusNeighborsClassifier
+    params = [
+        name
+        for name, param in signature(Estimator).parameters.items()
+        if param.kind != Parameter.VAR_KEYWORD
+    ]
+
+    smoke_test_values = [-1, 3.0, "helloworld", np.array([1.0, 4.0]), [1], {}, []]
+    for value in smoke_test_values:
+        new_params = {key: value for key in params}
+
+        # Does not raise
+        est = Estimator(**new_params)
+
+        # Also do does not raise
+        est.set_params(**new_params)

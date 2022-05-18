@@ -83,25 +83,28 @@
       
     </div>
     
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  
+
+  {% if messages %}
+
+  
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  
+  {% endif %}
+  
+{% endwith %}
+
+  </div>
+
     
-  </div>
+    
 
-  {% if not feedback %}
-  <div id="alert-1" style="display:none">
-    patient has diabetes &#128577;
-  </div>
-  <div id="alert-0 " style="display:none">
-    patient doesn't have diabetes &#128522;
-  </div>
-
-  <script>
-    if(document.URL.split("=")[1]=='[1]'){
-      document.querySelector("#alert-"+1).style.display = "block";;
-    }else{
-      document.querySelector("#alert-"+0).style.display = "block";;
-    }
-  </script>
-      {% endif %}
+  
       
       <!-- bootstrap js file  -->
     <script

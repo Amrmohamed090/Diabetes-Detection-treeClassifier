@@ -1,9 +1,10 @@
 
-from flask import Flask , render_template , request, redirect
+from flask import Flask , render_template ,flash, request, redirect
 import test
 
 
 app = Flask(__name__)
+app.secret_key = '2f0b6bfabfd2e24c1b5c98d4'
 
 @app.route("/")
 
@@ -36,8 +37,12 @@ def index():
             
             feedback = "foll"
             print(x)
+            result = test.predict([x])
+            if result :
+                flash('The prediction is you have diabetes', 'danger')
+            else:
+                flash('The prediction is you DONT have diabetes', 'success')
             
-            request.url += "?res="+str(test.predict([x]))
             return redirect(request.url)
             
 

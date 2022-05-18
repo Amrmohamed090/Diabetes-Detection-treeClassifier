@@ -558,7 +558,7 @@ class DummyRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 % (self.strategy, allowed_strategies)
             )
 
-        y = check_array(y, ensure_2d=False)
+        y = check_array(y, ensure_2d=False, input_name="y")
         if len(y) == 0:
             raise ValueError("y must not be empty.")
 
@@ -606,19 +606,17 @@ class DummyRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                     "when the constant strategy is used."
                 )
 
-            self.constant = check_array(
+            self.constant_ = check_array(
                 self.constant,
                 accept_sparse=["csr", "csc", "coo"],
                 ensure_2d=False,
                 ensure_min_samples=0,
             )
 
-            if self.n_outputs_ != 1 and self.constant.shape[0] != y.shape[1]:
+            if self.n_outputs_ != 1 and self.constant_.shape[0] != y.shape[1]:
                 raise ValueError(
                     "Constant target value should have shape (%d, 1)." % y.shape[1]
                 )
-
-            self.constant_ = self.constant
 
         self.constant_ = np.reshape(self.constant_, (1, -1))
         return self
