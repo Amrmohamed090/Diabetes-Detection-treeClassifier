@@ -33,14 +33,39 @@ Y = diabetes_dataset['Outcome']
 X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.001, random_state=40)
 
 
+score = 0
+best_sample_split = 2
+accuracy_list = list()
 from sklearn.tree import DecisionTreeClassifier
-model = DecisionTreeClassifier()
+score = 0
+best_sample_leaf = 2
+accuracy_list = list()
+for i in range(2,100):
+    model = DecisionTreeClassifier(random_state=0, min_samples_leaf= i)
+    model.fit(X_train, Y_train)
+
+    predictions = model.predict(X_train)
+    X_train_prediction = model.predict(X_train)
+    accuracy_score(X_train_prediction, Y_train)
+
+    X_test_prediction = model.predict(X_test)
+    new_score = accuracy_score(X_test_prediction, Y_test)
+    accuracy_list.append(new_score)
+    if new_score > score:
+        score = new_score
+        best_sample_leaf = i
+        
+    
+model = DecisionTreeClassifier(random_state=0, min_samples_leaf=best_sample_leaf )
 model.fit(X_train, Y_train)
+
 predictions = model.predict(X_train)
 X_train_prediction = model.predict(X_train)
 accuracy_score(X_train_prediction, Y_train)
+
 X_test_prediction = model.predict(X_test)
-accuracy = accuracy_score(X_test_prediction, Y_test)
+new_score = accuracy_score(X_test_prediction, Y_test)
+accuracy_score(X_test_prediction, Y_test)
 
 
 
@@ -56,72 +81,3 @@ def predict(x):
 
 print(predict(x))
 
-
-"""
-x = {"Pregnancies":[3, 1], "Glucose":[126, 117], "BloodPressure":[88, 88],	"SkinThickness":[41, 24],	"Insulin":[235, 34.5], 
-"BMI":[39.8, 34.5], "DiabetesPedigreeFunction":[0.704, 0.403], "Age":[27, 40]}
-data = pd.DataFrame(data=x)
-print(data)
-X_test_prediction2 = model.predict(data)
-print(X_test_prediction2)
-"""
-
-'''
-diabetes_dataset = pd.read_csv('data\diabetes.csv') 
-X = diabetes_dataset.drop(columns = 'Outcome', axis=1)
-Y = diabetes_dataset['Outcome']
-scaler = StandardScaler()
-scaler.fit(X)
-standardized_data = scaler.transform(X)
-X = standardized_data
-Y = diabetes_dataset['Outcome']
-X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.2,  random_state=50)
-
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import f1_score
-from sklearn.metrics import accuracy_score
-
-nonzero=['Glucose','BloodPressure','SkinThickness','Insulin','BMI']
-for col in nonzero:
-    diabetes_dataset[col]=diabetes_dataset[col].replace(0,np.NaN)
-    mean=int(diabetes_dataset[col].mean(skipna=True))
-    diabetes_dataset[col]=diabetes_dataset[col].replace(np.NaN,mean)
-
-x=diabetes_dataset.iloc[:,0:8]
-y=diabetes_dataset.iloc[:,8]
-x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=10,test_size=0.01)
-sc=StandardScaler()
-x_train=sc.fit_transform(x_train)
-x_test=sc.transform(x_test)
-classifier=KNeighborsClassifier(n_neighbors=15,p=2,metric='euclidean')
-model=classifier.fit(x_train,y_train)
-yp=classifier.predict(x_test)
-CM=confusion_matrix(y_test,yp)
-print("F-Score: ",(f1_score(y_test,yp)))
-print("Model Accuracy: ",accuracy_score(y_test,yp)*100,"%")
-x = {"Pregnancies":[3, 1], "Glucose":[126, 117], "BloodPressure":[88, 88],	"SkinThickness":[41, 24],	"Insulin":[235, 34.5], 
-"BMI":[39.8, 34.5], "DiabetesPedigreeFunction":[0.704, 0.403], "Age":[27, 40]}
-y = {"Pregnancies":[1], "Glucose":[117], "BloodPressure":[88],	"SkinThickness":[24],	"Insulin":[145], "BMI":[34.5], "DiabetesPedigreeFunction":[0.403], "Age":[40]}
-data = pd.DataFrame(data=x)
-print(data)
-X_test_prediction2 = classifier.predict(data)
-print(X_test_prediction2)
-'''
-
-"""
-model = DecisionTreeClassifier()
-model.fit(X_train, Y_train)
-predictions = model.predict(X_train)
-X_train_prediction = model.predict(X_train)
-accuracy_score(X_train_prediction, Y_train)
-X_test_prediction = model.predict(X_test)
-accuracy_score(X_test_prediction, Y_test)
-print(accuracy_score(X_test_prediction, Y_test))
-
-x = {"Pregnancies":[1], "Glucose":117, "BloodPressure":88,	"SkinThickness":24,	"Insulin":145, "BMI":34.5, "DiabetesPedigreeFunction":0.403, "Age":40}
-data = pd.DataFrame(data=x)
-X_test_prediction2 = model.predict(data)
-print(X_test_prediction2)
-"""
