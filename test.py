@@ -24,13 +24,51 @@ X = imp.transform(temp)
 z = pd.DataFrame(data=X)
 z[0] = pregnancy_column
 X = z
+X.columns = ['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']
+
+lower_limit = X["Insulin"].quantile(0.1)  
+upper_limit = X["Insulin"].quantile(0.90)
+
+X["Insulin"] = np.where(X["Insulin"]> upper_limit, upper_limit,
+                        np.where(X["Insulin"]< lower_limit, lower_limit,
+                        X["Insulin"]))
+''''''
+lower_limit = X['BloodPressure'].quantile(0.05)  
+upper_limit = X['BloodPressure'].quantile(0.95)
+
+X['BloodPressure'] = np.where(X['BloodPressure']> upper_limit, upper_limit,
+                        np.where(X['BloodPressure']< lower_limit, lower_limit,
+                        X['BloodPressure']))
+
+''''''
+lower_limit = X["SkinThickness"].quantile(0.05)  
+upper_limit = X["SkinThickness"].quantile(0.95)
+
+X["SkinThickness"] = np.where(X["SkinThickness"]> upper_limit, upper_limit,
+                        np.where(X["SkinThickness"]< lower_limit, lower_limit,
+                        X["SkinThickness"]))
+''''''
+lower_limit = X["BMI"].quantile(0.05)  
+upper_limit = X["BMI"].quantile(0.95)
+
+X["BMI"] = np.where(X["BMI"]> upper_limit, upper_limit,
+                        np.where(X["BMI"]< lower_limit, lower_limit,
+                        X["BMI"]))
+
+''''''
+lower_limit = X["Pregnancies"].quantile(0)  
+upper_limit = X["Pregnancies"].quantile(0.99)
+
+X["Pregnancies"] = np.where(X["Pregnancies"]> upper_limit, upper_limit,
+                        np.where(X["Pregnancies"]< lower_limit, lower_limit,
+                        X["Pregnancies"]))
 
 scaler = StandardScaler()
 scaler.fit(X)
 standardized_data = scaler.transform(X)
 X = standardized_data
 Y = diabetes_dataset['Outcome']
-X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.001, random_state=40)
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.3, stratify=Y, random_state=2)
 
 
 score = 0

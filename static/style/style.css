@@ -1,0 +1,223 @@
+:root{
+    --blue-color: #112B3C;
+    --orange-color:#F66B0E;
+    --blue-off-color:#205375;
+    --white-off-color:#EFEFEF;
+    --gray-color:#DDDDDD;
+    --bl:#3b80bc;
+}
+body{
+    font-family: 'Roboto Light',sans-serif;
+    background-color: white;
+}
+
+/*navbar starts*/
+.navbar{
+    background-color: white;
+}
+.navbar .navbar-nav .nav-link{
+    color: var(--bl);
+    font-weight: bolder;
+}
+
+.navbar .navbar-nav .nav-link .active,
+.navbar .navbar-nav .nav-link:focus,
+.navbar .navbar-nav .nav-link:hover{
+    color: red;
+}
+
+
+
+.navbar .team{
+    font-size: 20px;
+    color: var(--bl);
+    border-left: var(--bl) solid 3px;
+}
+
+.navbar .team:hover,
+.navbar .team:focus,
+.navbar .team:active{
+    color: var(--blue-off-color);
+}
+
+.navbar .navbar-toggler{
+    border: none;
+    color: var(--bl);
+    font-size: 30px;
+    transition: 0.5s;
+}
+
+.navbar .navbar-toggler:focus{
+    box-shadow: none;
+}
+.navbar .navbar-toggler :active{
+    color: var(--orange-color);
+}
+
+.navbar .log-in{
+    background: none;
+    color: var(--bl);
+    border: solid 1px var(--bl);
+    transition: 0.5s;
+    margin-left: 10px;
+}
+.navbar .log-in:hover,
+.navbar .log-in:active,
+.navbar .log-in:focus{
+    background: var(--bl);
+    color: white;
+    box-shadow: none;
+}
+
+/* navbar ends*/
+
+/*Landing Starts*/
+
+.landing .log-in{
+    background: none;
+    color: var(--bl);
+    border: solid 1px var(--bl);
+    transition: 0.5s;
+    margin-left: 10px;
+    width: 100px;
+}
+.landing .log-in:hover,
+.landing .log-in:active,
+.landing .log-in:focus{
+    background: var(--bl);
+    color: white;
+    box-shadow: none;
+}
+
+.landing{
+    background: white;
+    min-height: 580px;
+}
+
+.landing .row{
+    border-left: solid 4px var(--bl);
+
+}
+.landing.card-body{
+    padding-left: 20px;
+}
+
+
+.landing h1{
+    color: red;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+.landing p{
+    color: whitesmoke;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+/*Landing ends*/
+
+
+/**/
+
+
+.team-sec .serv-icon{
+    color: var(--bl);
+    font-size: 40px;
+}
+
+
+.team-sec .main-title .title{
+    text-transform: uppercase;
+    color: var(--bl);
+    font-size: 25px;
+    letter-spacing: 10px;
+    font-weight: bolder;
+}
+
+.team-sec .member .card{
+    border: var(--bl) 1px solid;
+    border-radius: 20px;
+    color: var(--bl);
+    transition: 0.5s;
+}
+
+
+.team-sec .member .card-body a{
+    background-color: white;
+    color: var(--bl);
+    border: var(--bl) solid 1px;
+    border-radius: 50%;
+    margin: 7px 0;
+}
+
+
+
+.team-sec .member .card-body a:hover,
+.team-sec .member .card-body a:focus,
+.team-sec .member .card-body a:active{
+    box-shadow: none;
+    background-color: var(--bl);
+    color: white;
+}
+
+/**/
+
+
+
+footer{
+    position: relative;
+    width: 100%;
+    background-color:var(--bl);
+    height: 150px;
+    padding: 30px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+footer .social_icon,
+footer .mn{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:10px 0;
+    flex-wrap: wrap;
+}
+
+footer .social_icon li,
+footer .mn li{
+    list-style: none;
+}
+
+footer .social_icon li a{
+    font-size: 2em;
+    color: var(--white-off-color);
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+}
+
+.foot footer .social_icon li a:hover{
+    transform: translatey(-10px);
+    color: var(--blue-color);
+}
+
+.foot footer .mn li a{
+    font-size: 16px;
+    color: var(--white-off-color);
+    margin: 0 20px;
+    display: inline-block;
+    transition: 0.5s;
+    text-decoration: none;
+}
+
+footer .mn li a:hover{
+    opacity: 1;
+    color: var(--blue-color);
+    transform: translatey(-10px);
+}
+
+

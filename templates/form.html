@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible"content="IE=edge"/>
+    <meta name="viewport"content="width-device-width,initial-scale=1.0"/>
+    <!--    import google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;1,300;1,400;1,500;1,900&display=swap" rel="stylesheet">
+    <!--    -->
+    <link rel="stylesheet" href="../static/style/all.min.css">
+    <link rel="stylesheet" href="../static/style/bootstrap.min.css">
+    <!--    -->
+    <link rel="stylesheet" href="../static/style/form.css">
+    <title>Form Page</title>
+</head>
+<body>
+
+<!--   navbar starts     -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/index">
+            <img src="../static/images/b39622d0f84baefb0dee8a11b445681a.png" alt="Emergency" height="75 px">
+        </a>
+        <a href="/index" class="gBack btn btn-primary rounded-pill main-btn ms-1" ><i class="fa-solid fa-house"></i></a>
+    </div>
+    </div>
+</nav>
+<!--   navbar end     -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<section class="login-box text-center">
+    <img src="../static/images/23b5564845a40fffb18302a3ae040241.png" class="logo" style="width: 75px;">
+    <h1 class="text-uppercase pb-0" style="color: var(--bl); font-weight: bolder;">Test Now</h1>
+    <p class="pb-2" style="color: var(--bl); font-size: 13px">Please Complete This Form</p>
+    {% if feedback %}
+    <div class="alert alert-danger" role="alert">
+      <p>{{ feedback }}</p>
+    </div>
+    {% endif %}
+    <form method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                    <label for="Pregnancy" class="float-start" style="color: var(--gray-color)">Times of previuos pregnancy</label>
+                    <input type="text" id="Pregnancy" name="Pregnancy" class="mb-3" style="width: 260px">
+
+
+
+                    <label for="glucose" class="float-start" style="color: var(--gray-color)">Glucose level</label>
+                    <input type="text" id="glucose" name="glucose" class="mb-3"  style="width: 260px" required>
+
+                    <label for="BloodPressure" class="float-start" style="color: var(--gray-color)">Blood Pressure</label>
+                    <input type="text" id="BloodPressure" name="BloodPressure" class="mb-3" style="width: 260px">
+
+                    <label for="SkinThickness" class="float-start" style="color: var(--gray-color)">Skin Thickness</label>
+                    <input type="text" id="SkinThickness" name="SkinThickness" class="mb-3"  style="width: 260px" required>
+
+                    <label for="Insulin" class="float-start" style="color: var(--gray-color)">Insulin</label>
+                    <input type="text" id="Insulin" name="Insulin" class="mb-3"  style="width: 260px" required>
+
+                    <label for="BMI" class="float-start" style="color: var(--gray-color)">Body mass index</label>
+                    <input type="text" id="BMI" name="BMI" class="mb-3"  style="width: 260px" required>
+
+                    <label for="DiabetesPedigreeFunction" class="float-start " style="color: var(--gray-color); margin-right: 10px">Diabetes Pedigree Function</label>
+                    <input type="text" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" class="mb-3"  style="width: 260px" required>
+
+                    <label for="age" class="float-start" style="color: var(--gray-color)">Age</label>
+                    <input type="text" id="age" name="age" class="mb-3"  style="width: 260px" required>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" name="" value="Login" class="sin btn btn-primary mt-4" style="width: 100px;">Submit</button>
+        <button type="reset" name="" value="reset" class="sin btn btn-primary mt-4" style="width: 100px; margin-left: 10px">Reset</button>
+    </form>
+</section>
+
+
+<section class="foot">
+    <footer>
+        <ul class="social_icon">
+            <li><a href="#"><i class="fa-brands fa-github"></i></a></li>
+        </ul>
+        <p style="font-size: 15px; color: white">&copy; Biostatistics course Team 27</p>
+    </footer>
+</section>
+
+<script src="../static/script/bootstrap.bundle.min.js"></script>
+<script src="../static/script/all.min.js"></script>
+</body>
+</html>

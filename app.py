@@ -1,15 +1,24 @@
 
-from flask import Flask , render_template ,flash, request, redirect
+from flask import Flask , render_template ,flash, request, redirect, url_for
 import test
 
 
 app = Flask(__name__)
 app.secret_key = '2f0b6bfabfd2e24c1b5c98d4'
 
-@app.route("/")
+def swap(list, pos1, pos2):
+     
+    list[pos1], list[pos2] = list[pos2], list[pos1]
+    return list
 
-@app.route("/index" , methods=["GET", "POST"])
+
+@app.route("/")
+@app.route("/index")
 def index():
+    return render_template('index.html')
+
+@app.route("/form" , methods=["GET", "POST"])
+def form():
     if request.method == "POST":
 
         req = request.form
@@ -32,10 +41,10 @@ def index():
                 try:    
                     x.append(float(v))
                 except ValueError:
-                    feedback = f"The value of {k} must be a number"
-                    return render_template("index.html", feedback=feedback)
+                    feedback = f"The value of '{k}' must be a number"
+                    return render_template("form.html", feedback=feedback)
             
-            feedback = "foll"
+
             print(x)
             result = test.predict([x])
             if result :
@@ -47,6 +56,6 @@ def index():
             
 
         return redirect(request.url)
-    return render_template('index.html')
+    return render_template('form.html')
 
 
