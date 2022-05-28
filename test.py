@@ -15,17 +15,16 @@ Y = diabetes_dataset['Outcome']
 
 #preprocessing the data set, replacing null values with the average in (Glucose, BloodPressure, SkinThickness, Insulin, BMI)
 
-imp = SimpleImputer(missing_values=0, strategy='mean')
-pregnancy_column = X["Pregnancies"]
-temp= X
-imp.fit(temp)
-temp= X
-X = imp.transform(temp)
-z = pd.DataFrame(data=X)
-z[0] = pregnancy_column
-X = z
-X.columns = ['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']
+X.loc[X['Glucose'] == 0,'Glucose'] = np.nan
+X.loc[X['BloodPressure'] == 0,'BloodPressure'] = np.nan
+X.loc[X['SkinThickness'] == 0,'SkinThickness'] = np.nan
+X.loc[X['Insulin'] == 0,'Insulin'] = np.nan
+X.loc[X['BMI'] == 0,'BMI'] = np.nan
+X.loc[X['DiabetesPedigreeFunction'] == 0,'DiabetesPedigreeFunction'] = np.nan
+X.loc[X['Age'] == 0,'Age'] = np.nan
 
+
+#remove outlier
 lower_limit = X["Insulin"].quantile(0.1)  
 upper_limit = X["Insulin"].quantile(0.90)
 
@@ -62,6 +61,18 @@ upper_limit = X["Pregnancies"].quantile(0.99)
 X["Pregnancies"] = np.where(X["Pregnancies"]> upper_limit, upper_limit,
                         np.where(X["Pregnancies"]< lower_limit, lower_limit,
                         X["Pregnancies"]))
+
+imp = SimpleImputer(missing_values=np.nan, strategy='mean')
+pregnancy_column = X["Pregnancies"]
+temp= X
+imp.fit(temp)
+temp= X
+X = imp.transform(temp)
+z = pd.DataFrame(data=X)
+z[0] = pregnancy_column
+X = z
+X.head()
+X.columns = ['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']
 
 scaler = StandardScaler()
 scaler.fit(X)
